@@ -32,7 +32,7 @@ let tweets = [
 
 // 해당 아이디에 대한 트윗 가져오기
 // GET
-// http://127.0.0.1:8080/tweets?username=:username
+// http://127.0.0.1:9090/tweets?username=:username
 router.get('/', (req, res, next) => {   // query 는 ? 이후에 모든 데이터들
     const username = req.query.username
     const tweet = username ? tweets.filter((tweet) => tweet.username == username) : tweets
@@ -41,7 +41,7 @@ router.get('/', (req, res, next) => {   // query 는 ? 이후에 모든 데이�
 
 // 글 번호에 대한 트윗 가져오기
 // GET
-// http://127.0.0.1:8080/tweets/:id
+// http://127.0.0.1:9090/tweets/:id
 router.get('/:id', (req, res, next) => {   // query 는 ? 이후에 모든 데이터들
     const id = req.params.id
     const tweet = tweets.find((tweet) => tweet.id === id)
@@ -54,7 +54,7 @@ router.get('/:id', (req, res, next) => {   // query 는 ? 이후에 모든 데�
 
 // 트윗 하기
 // POST
-// http://127.0.0.1:8080/tweets
+// http://127.0.0.1:9090/tweets
 // json 형태로 입력 후 추가된 데이터 까지 모두 json으로 출력
 router.post('/', (req, res, next) => {
     const { username, name, text } = req.body
@@ -71,7 +71,7 @@ router.post('/', (req, res, next) => {
 
 // 트윗 수정하기
 // PUT
-// http://127.0.0.1:8080/tweets/:id
+// http://127.0.0.1:9090/tweets/:id
 // json 형태로 입력 후 추가된 데이터 까지 모두 json으로 출력
 router.put('/:id', (req, res, next) => {
     const id = req.params.id
@@ -87,7 +87,7 @@ router.put('/:id', (req, res, next) => {
 
 // 트윗 삭제하기
 // DELETE
-// http://127.0.0.1:8080/tweets/:id
+// http://127.0.0.1:9090/tweets/:id
 router.delete('/:id', (req, res, next) => {
     const id = req.params.id
     const tweet = tweets.find((tweet) => tweet.id === id)
