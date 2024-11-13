@@ -2,7 +2,7 @@ let users = [
     {
         id:'1',
         username:'apple',
-        password: '1111',
+        password: '4444',
         name:'김사과',
         email:'apple@apple.com',
         url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQliZquTmH17hknpnn2sGfWObG0IdiiNwUaEw&s'
@@ -38,7 +38,8 @@ export async function createUser(username, password, name) {
     return user
 }
 
-export async function login(username) {
+export async function findByUsername(username) {
     const user = users.find((user) => user.username === username)
     return user
 }
+

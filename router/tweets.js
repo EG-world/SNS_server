@@ -1,8 +1,14 @@
 // 글 관련 파일
 import express from 'express'
 import * as tweetController from '../controller/tweet.js'
-
+import { body } from 'express-validator'
+import { validate } from '../middleware/validator.js'
+ 
 const router = express.Router()
+
+const validateTweet = [
+    body('text').trim().isLength({min:3}).withMessage('최소 3자이상 입력하세요'), validate
+]
 
 // data
 
@@ -21,13 +27,13 @@ router.get('/:id', tweetController.getTweetById)
 // POST
 // http://127.0.0.1:9090/tweets
 // json 형태로 입력 후 추가된 데이터 까지 모두 json으로 출력
-router.post('/', tweetController.CreateTweet)
+router.post('/', validateTweet, tweetController.CreateTweet)
 
 // 트윗 수정하기
 // PUT
 // http://127.0.0.1:9090/tweets/:id
 // json 형태로 입력 후 추가된 데이터 까지 모두 json으로 출력
-router.put('/:id', tweetController.PutTweetById)
+router.put('/:id', validateTweet, tweetController.PutTweetById)
 
 // 트윗 삭제하기
 // DELETE
