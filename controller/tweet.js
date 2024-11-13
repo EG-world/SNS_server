@@ -1,4 +1,11 @@
 import * as tweetRepository from '../data/tweet.js'
+import jwt from 'jsonwebtoken'
+
+async function createJwtToken(id) {
+    return jwt.sign(
+        {id}, secretkey, { expiresIn: jwtExpiresInDays }
+    )
+}
 
 // 모든 트윗을 가져오는 함수
 export async function getTweets(req, res) {
@@ -29,17 +36,27 @@ export async function CreateTweet(req, res, next) {
 export async function PutTweetById(req, res, next) {
     const id = req.params.id
     const text = req.body.text
-    const tweet = await tweetRepository.update(id, text)
-    if(tweet) {
-        res.status(201).json(tweet)
-    }else {
+    const tweet = await tweetRepository.getById(id)
+    if(!tweet) {
         res.status(404).json({message: `${id}의 트윗이 없습니다`})
     }
+    if(tweet.userId !== req.userId) {
+        return res.sendStatus(403)
+    }
+    const updated = await tweetRepository.update(id, text)
+    res.status(200).json(updated)
 } 
 
 // id에 해당하는 트윗을 삭제하는 함수
 export async function DelTweet(req, res, next) {
     const id = req.params.id
+    const tweet = await tweetRepository.getById(id)
+    if(!tweet) {
+        res.status(404).json({message: `${id}의 트윗이 없습니다`})
+    }
+    if(tweet.userId !== req.userId) {
+        return res.sendStatus(403)
+    }
     await tweetRepository.deleteTweet(id)
     res.status(204)
 }

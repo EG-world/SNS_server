@@ -43,3 +43,7 @@ export async function findByUsername(username) {
     return user
 }
 
+export async function findById(id) {
+    return users.find((user) => user.id === id)
+}
+
