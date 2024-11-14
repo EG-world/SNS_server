@@ -1,12 +1,5 @@
 import * as tweetRepository from '../data/tweet.js'
-import jwt from 'jsonwebtoken'
 import { getSocketIo } from '../connection/socket.js'
-
-async function createJwtToken(id) {
-    return jwt.sign(
-        {id}, secretkey, { expiresIn: jwtExpiresInDays }
-    )
-}
 
 // 모든 트윗을 가져오는 함수
 export async function getTweets(req, res) {
