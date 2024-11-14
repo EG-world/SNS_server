@@ -1,5 +1,6 @@
 import * as tweetRepository from '../data/tweet.js'
 import jwt from 'jsonwebtoken'
+import { getSocketIo } from '../connection/socket.js'
 
 async function createJwtToken(id) {
     return jwt.sign(
@@ -30,6 +31,7 @@ export async function CreateTweet(req, res, next) {
     const { username, name, text } = req.body
     const tweet = await tweetRepository.create(username, name, text)
     res.status(201).json(tweet)
+    getSocketIo().emit('tweets', tweet)
 }
 
 // id에 해당하는 트윗을 수정하는 함수
