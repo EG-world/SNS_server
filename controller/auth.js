@@ -1,15 +1,11 @@
 import * as authRepository from '../data/auth.js'
 import * as bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
-const secretkey = 'qwer1234#$%'
-const bcryptSaltRounds = 10
-const jwtExpiresInDays = '2d'
-
+import { config } from '../config.js' 
 
 async function createJwtToken(id) {
     return jwt.sign(
-        {id}, secretkey, { expiresIn: jwtExpiresInDays }
+        {id}, config.jwt.secretKey , { expiresIn: config.jwt.expiresInSec }
     )
 }
 
@@ -21,7 +17,7 @@ export async function signup(req, res, next) {
     if(found) {
         return res.status(409).json({ message: `${username}해당 아이디가 이미 존재합니다`})
     }
-    const hashed = bcrypt.hashSync(password, bcryptSaltRounds)
+    const hashed = bcrypt.hashSync(password, config.bcrypt.saltRounds)
     const users = await authRepository.createUser(username, hashed, name)
     const token = await createJwtToken(users.id)
     res.status(201).json({token, username})

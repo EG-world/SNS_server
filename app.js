@@ -1,6 +1,7 @@
 import express from 'express'
 import tweetsRouter from './router/tweets.js' // 나중에 tweets를 sns로 바꾸기
 import authRouter from './router/auth.js'
+import { config } from './config.js'
 
 const app = express()
 
@@ -14,4 +15,4 @@ app.use((req, res, next) => {
     res.sendStatus(404)
 })
 
-app.listen(9090)
+app.listen(config.host.port)
