@@ -21,8 +21,8 @@ export async function getTweetById(req, res, next) {
 
 // request로 받은 데이터로 트윗을 생성하는 함수
 export async function CreateTweet(req, res, next) {
-    const { username, name, text } = req.body
-    const tweet = await tweetRepository.create(username, name, text)
+    const { text } = req.body
+    const tweet = await tweetRepository.create(text, req.userId)
     res.status(201).json(tweet)
     getSocketIo().emit('tweets', tweet)
 }
@@ -43,15 +43,15 @@ export async function PutTweetById(req, res, next) {
 } 
 
 // id에 해당하는 트윗을 삭제하는 함수
-export async function DelTweet(req, res, next) {
+export async function DelTweet(req, res, next){
     const id = req.params.id
     const tweet = await tweetRepository.getById(id)
-    if(!tweet) {
-        res.status(404).json({message: `${id}의 트윗이 없습니다`})
+    if(!tweet){
+        return res.status(404).json({message: `${id}의 트윗이 없습니다`})
     }
-    if(tweet.userId !== req.userId) {
+    if(tweet.userId !== req.userId){
         return res.sendStatus(403)
     }
     await tweetRepository.deleteTweet(id)
-    res.status(204)
+    res.sendStatus(204)
 }
