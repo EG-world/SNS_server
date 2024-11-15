@@ -3,9 +3,16 @@ import tweetsRouter from './router/tweets.js' // 나중에 tweets를 sns로 바�
 import authRouter from './router/auth.js'
 import { config } from './config.js'
 import { initSocket } from './connection/socket.js'
-import { db } from './db/database.js'
+// import { db } from './db/database.js'
+// npm i cors
+import cors from 'cors'
 
 const app = express()
+
+app.use(cors({
+    origin: '*',
+    credentials: true
+}))
 
 // 미들웨어 등록, 시작시 실행
 app.use(express.json())
