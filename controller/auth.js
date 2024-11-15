@@ -11,14 +11,20 @@ async function createJwtToken(id) {
 
 // signup
 export async function signup(req, res, next) {
-    const { username, password, name } = req.body
+    const { username, password, name, email, url} = req.body
     // 회원 중복 체크
     const found = await authRepository.findByUsername(username)
     if(found) {
         return res.status(409).json({ message: `${username}해당 아이디가 이미 존재합니다`})
     }
     const hashed = bcrypt.hashSync(password, config.bcrypt.saltRounds)
-    const users = await authRepository.createUser(username, hashed, name)
+
+    const users = await authRepository.createUser({
+        username,
+        password: hashed,
+        name,
+        email,
+        url}) // 중괄호를 사용해야 한꺼번에 하나의 파라미터로 들어간다
     const token = await createJwtToken(users.id)
     res.status(201).json({token, username})
 }
